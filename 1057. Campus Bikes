@@ -1,0 +1,78 @@
+// method 1:
+
+class Solution {
+    public int[] assignBikes(int[][] workers, int[][] bikes) {
+        int w = workers.length, b = bikes.length;
+        int[] wo = new int[w], bi = new int[b];
+        Arrays.fill(wo, -1);
+        Arrays.fill(bi, -1);
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>(){
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[0] != b[0] ? a[0] - b[0]
+                    : (a[1] != b[1] ? a[1] - b[1]
+                       : (a[2] - b[2]));
+            }
+        });
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < b; j++) {
+                int[] worker = workers[i];
+                int[] bike = bikes[j];
+                int dist = Math.abs(worker[0] - bike[0]) + Math.abs(worker[1] - bike[1]);
+                pq.offer(new int[]{dist, i, j});
+            }
+        }
+        int assigned = 0;
+        while (!pq.isEmpty() && assigned < w) {
+            int[] s = pq.poll();
+            if (wo[s[1]] == -1 && bi[s[2]] == -1) {
+                wo[s[1]] = s[2];
+                bi[s[2]] = s[1];
+                assigned++;
+            }
+        }
+        return wo;
+    }
+}
+
+Time complexity might be O(M*N*log(M*N)) in worst case? (Not quite sure since heapifying should be O(M*N) )
+
+
+// method 2:
+
+class Solution {
+    public int[] assignBikes(int[][] workers, int[][] bikes) {
+        // Notice that the Manhattan distance is between 0 and 2000, 
+        // which means we can sort easily without even using priority queue
+        int w = workers.length, b = bikes.length;
+        int[] wo = new int[w], bi = new int[b];
+        List<int[]>[] dists = new List[2001];
+        Arrays.fill(wo, -1);
+        Arrays.fill(bi, -1);
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < b; j++) {
+                int[] worker = workers[i];
+                int[] bike = bikes[j];
+                int dist = Math.abs(worker[0] - bike[0]) + Math.abs(worker[1] - bike[1]);
+                if (dists[dist] == null) {
+                    dists[dist] = new ArrayList<int[]>();
+                }
+                dists[dist].add(new int[]{i, j});
+            }
+        }
+        int assigned = 0;
+        for (int i = 0; i <= 2000 && assigned < w; i++) {
+            if (dists[i] == null) continue;
+            for (int[] pair : dists[i]) {
+                if (wo[pair[0]] == -1 && bi[pair[1]] == -1) {
+                    wo[pair[0]] = pair[1];
+                    bi[pair[1]] = pair[0];
+                    assigned++;
+                }
+            }
+        }
+        return wo;
+    }
+}
+
+So we could use the following counting sort solution with time complexity of O(M*N)
