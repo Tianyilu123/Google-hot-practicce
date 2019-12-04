@@ -1,0 +1,46 @@
+
+public class Solution {
+    public int splitArray(int[] nums, int m) {
+        long left = 0;
+        long right = 0;
+        
+        for (int num : nums) {
+            left = Math.max(left, num);
+            right += num;
+        }
+        
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            if (canSplit(nums, m, mid)) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return (int) left;
+    }
+    
+    private boolean canSplit(int[] nums, int m, long cap) {
+        int count = 1;
+        long sum = 0;
+        
+        for (int num : nums) {
+            sum += num;
+            if (sum > cap) {
+                count++;
+                if (count > m) {
+                    return false;
+                }
+                sum = num;
+            }
+        }
+        return true;
+    } 
+}
+
+
+Time complexity:
+Say there are n numbers. Binary search takes O(log(sum(nums) - max(nums)). CanSplit takes O(n). 
+The overall time complexity is O(nlog(sum(nums) - max(nums))).
+
+
