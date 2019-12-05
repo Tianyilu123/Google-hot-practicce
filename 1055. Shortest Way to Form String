@@ -1,0 +1,22 @@
+class Solution {
+    public int shortestWay(String source, String target) {
+        int i = 0, ans = 0;
+        while(i != target.length()) {
+            int next = scan(source, target, i);
+            if(next == i) return -1;
+            ans++;
+            i = next;
+        }
+        return ans;
+    }
+    
+    private int scan(String source, String target, int i) {
+        for(char ch : source.toCharArray()) {
+            if(i != target.length()) {
+                char curr = target.charAt(i);
+                if(curr == ch) i++;
+            }
+        }
+        return i;
+    }
+}
