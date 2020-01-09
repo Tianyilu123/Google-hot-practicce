@@ -1,0 +1,35 @@
+class StringIterator {
+    private int i;
+    private long rep;
+    private char ch;
+    private char[] cs;
+    
+    public StringIterator(String compressedString) {
+        cs = compressedString.toCharArray();
+    }
+    
+    public char next() {
+        if (rep > 0) {
+            rep--;
+            return ch;
+        }
+        else if (i < cs.length) {
+            ch = cs[i];
+            int j = i + 1;
+            while (j < cs.length && Character.isDigit(cs[j])) {
+                rep = rep * 10 + cs[j] - '0';
+                j++;
+            }
+            rep--;
+            i = j;
+            return ch;
+        }
+        else {
+            return ' ';
+        }        
+    }
+    
+    public boolean hasNext() {
+        return rep > 0 || i < cs.length;
+    }
+}
