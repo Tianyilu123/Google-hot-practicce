@@ -1,0 +1,30 @@
+class Solution {
+    int[] validDigits = {0,1,8};
+    int[] goodDigits = {2,5,6,9};
+    public int rotatedDigits(int N) {
+        int count =0;
+        for(int i=1; i<=N; i++){
+            if(isGoodNum(i)) count++;
+        }
+        return count;
+    }
+    public boolean isGoodNum(int num){
+        int digit = 0, count = 0;
+        while(num != 0){
+            digit = num%10;
+            num = num/10;
+            if(!isGoodDigit(digit) && !isValidDigit(digit)) return false;
+            if(isGoodDigit(digit)) count ++;
+        }
+        if(count == 0) return false;
+        return true;
+    }
+    public boolean isGoodDigit(int digit){
+        for(int goodDigit : goodDigits) if(digit == goodDigit) return true;
+        return false;
+    }
+    public boolean isValidDigit(int digit){
+        for(int validDigit: validDigits) if(digit == validDigit) return true;
+        return false;
+    }
+}
