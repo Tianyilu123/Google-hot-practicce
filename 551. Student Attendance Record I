@@ -1,0 +1,15 @@
+class Solution {
+    public boolean checkRecord(String s) {
+        int counter = 0;
+        if(s.contains("LLL"))
+            return false;
+        for(char c: s.toCharArray()){
+            if(c == 'A')
+                counter++;
+            if(counter > 1)
+                return false;
+        }
+        
+        return true;
+    }
+}
