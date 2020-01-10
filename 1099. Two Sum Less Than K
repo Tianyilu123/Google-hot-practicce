@@ -6,9 +6,9 @@ class Solution {
             int sum = A[i] + A[j];
             if (sum < K) { // find one candidate.
                 max = Math.max(max, sum);
-                ++i; // increase the smaller element.
+                i++; // increase the smaller element.
             }else { // >= sum.
-                --j; // decrease the bigger element.
+                j--; // decrease the bigger element.
             }
         }
         return max;
