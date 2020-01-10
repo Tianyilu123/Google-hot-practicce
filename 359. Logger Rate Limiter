@@ -1,11 +1,15 @@
-public class Logger {
-
-    private Map<String, Integer> ok = new HashMap<>();
-
+class Logger {
+    private HashMap<String, Integer> map;
+    
+    public Logger() {
+        this.map = new HashMap<>();
+    }
+    
+   
     public boolean shouldPrintMessage(int timestamp, String message) {
-        if (timestamp < ok.getOrDefault(message, 0))
+        if(timestamp < map.getOrDefault(message, 0))
             return false;
-        ok.put(message, timestamp + 10);
+        map.put(message, timestamp + 10);
         return true;
     }
 }
